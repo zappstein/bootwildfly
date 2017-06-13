@@ -59,7 +59,7 @@ public class NotificationController {
         return "alive";
     }
 
-    @RequestMapping(value = "/notification", method = RequestMethod.POST, produces = "text/xml")
+    @RequestMapping(value = "/notification/services/manageDistributor_3", method = RequestMethod.POST, produces = "text/xml")
     public ResponseEntity<String> notify(@RequestBody String body, HttpServletRequest req) {
 
         LOG.info("Received notification from '{}'. ", req.getRemoteAddr());
