@@ -112,7 +112,7 @@ public class NotificationController {
         }
 
         try {
-            LOG.info("Forwarding notification to '{}' for merchantId {}. ", endpoints.get(merchantId), merchantId);
+            LOG.info("Forwarding notification to {} for merchantId '{}'. ", endpoints.get(merchantId), merchantId);
             RestTemplate template = new RestTemplate();
             HttpEntity<String> body = new HttpEntity<>(reqBody);
             template.setErrorHandler(new ResponseErrorHandler());
