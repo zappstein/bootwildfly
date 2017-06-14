@@ -77,7 +77,7 @@ public class NotificationController {
             resp = createFallbackResponse(values);
         }
 
-        LOG.info("Notification processed. ");
+        LOG.info("Notification processed with status code {}. ", resp.getStatusCode());
         return resp;
     }
 
@@ -112,6 +112,7 @@ public class NotificationController {
         }
 
         try {
+            LOG.info("Forwarding notification to '{}' for merchantId {}. ", endpoints.get(merchantId), merchantId);
             RestTemplate template = new RestTemplate();
             HttpEntity<String> body = new HttpEntity<>(reqBody);
             template.setErrorHandler(new ResponseErrorHandler());
