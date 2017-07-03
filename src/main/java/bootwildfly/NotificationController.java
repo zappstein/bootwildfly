@@ -3,7 +3,6 @@ package bootwildfly;
 import static bootwildfly.NotificationBodyParser.retrieveData;
 import static java.util.Arrays.asList;
 import static java.util.TimeZone.getTimeZone;
-import static org.springframework.http.HttpMethod.resolve;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -105,14 +104,14 @@ public class NotificationController {
         LOG.info("Added endpoint '{}' for merchantId '{}'", body, merchantId);
     }
 
-    @RequestMapping(value = "/bdd/{gateway}/services/{service}")
+    @RequestMapping(value = "/bdd/{gateway}/services/{service}", method = RequestMethod.POST)
     public ResponseEntity<String> bddForward(@PathVariable(value = "gateway") String gateway, @PathVariable(value = "service") String service,
             @RequestBody String reqBody, HttpServletRequest request) {
         LOG.info("forwarding gateway '{}' and service '{}'", gateway, service);
         String target = "http://54.194.34.27:40121/" + gateway + "/services/" + service;
         RestTemplate template = new RestTemplate();
         HttpEntity<String> body = new HttpEntity<>(reqBody);
-        return template.exchange(target, resolve(request.getMethod()), body, String.class);
+        return template.exchange(target, HttpMethod.POST, body, String.class);
 
     }
 
