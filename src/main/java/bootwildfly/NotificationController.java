@@ -104,16 +104,16 @@ public class NotificationController {
         LOG.info("Added endpoint '{}' for merchantId '{}'", body, merchantId);
     }
 
-//    @RequestMapping(value = "/bdd/{gateway}/services/{service}", method = RequestMethod.POST)
-//    public ResponseEntity<String> bddForward(@PathVariable(value = "gateway") String gateway, @PathVariable(value = "service") String service,
-//            @RequestBody String reqBody, HttpServletRequest request) {
-//        String target = "http://54.194.34.27:40121/" + gateway + "/services/" + service;
-//        LOG.info("forwarding to '{}'", target);
-//        RestTemplate template = new RestTemplate();
-//        HttpEntity<String> body = new HttpEntity<>(reqBody);
-//        return template.exchange(target, HttpMethod.POST, body, String.class);
-//
-//    }
+    @RequestMapping(value = "/bdd/{gateway}/services/{service}", method = RequestMethod.POST)
+    public ResponseEntity<String> bddForward(@PathVariable(value = "gateway") String gateway, @PathVariable(value = "service") String service,
+            @RequestBody String reqBody) {
+        String target = "http://54.194.34.27:40121/" + gateway + "/services/" + service;
+        LOG.info("forwarding to '{}'", target);
+        RestTemplate template = new RestTemplate();
+        HttpEntity<String> body = new HttpEntity<>(reqBody);
+        return template.exchange(target, HttpMethod.POST, body, String.class);
+
+    }
 
     private ResponseEntity<String> handleForward(String reqBody, String merchantId) {
 
