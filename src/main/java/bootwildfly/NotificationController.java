@@ -104,6 +104,12 @@ public class NotificationController {
         LOG.info("Added endpoint '{}' for merchantId '{}'", body, merchantId);
     }
 
+    @RequestMapping(value = "/bdd/{gateway}/services/{service}")
+    public String bddForward(@PathVariable(value = "gateway") String gateway, @PathVariable(value = "service") String service) {
+        LOG.info("forwarding gateway '{}' and service '{}'", gateway, service);
+        return "forward:http://54.194.34.27:40121/" + gateway + "/services/" + service;
+    }
+
     private ResponseEntity<String> handleForward(String reqBody, String merchantId) {
 
         if (endpoints.get(merchantId) == null) {
