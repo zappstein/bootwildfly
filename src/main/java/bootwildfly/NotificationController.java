@@ -9,6 +9,8 @@ import static org.springframework.http.HttpStatus.OK;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.StringJoiner;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -104,10 +106,19 @@ public class NotificationController {
         LOG.info("Added endpoint '{}' for merchantId '{}'", body, merchantId);
     }
 
-    @RequestMapping(value = "/bdd/{gateway}/services/{service}", method = RequestMethod.POST)
-    public ResponseEntity<String> bddForward(@PathVariable(value = "gateway") String gateway, @PathVariable(value = "service") String service,
-            @RequestBody String reqBody) {
-        String target = "http://54.194.34.27:40121/" + gateway + "/services/" + service;
+    @RequestMapping(value = {
+            "/bdd/{path1}/{path2}",
+            "/bdd/{path1}/{path2}/{path3}",
+            "/bdd/{path1}/{path2}/{path3}/{path4}",
+            "/bdd/{path1}/{path2}/{path3}/{path4}/path5" }, method = RequestMethod.POST)
+    public ResponseEntity<String> bddForward(Map<String, String> pathVariables, @RequestBody String reqBody) {
+        StringJoiner sj = new StringJoiner("/");
+        TreeMap<String, String> sorted = new TreeMap<>(pathVariables);
+        for (String path : sorted.keySet()) {
+            sj.add(sorted.get(path));
+        }
+
+        String target = "http://54.194.34.27:40121/" + sj.toString();
         try {
             LOG.info("forwarding to '{}'", target);
             RestTemplate template = new RestTemplate();
@@ -118,7 +129,6 @@ public class NotificationController {
             LOG.warn("Exception occured while forwarding notification to '{}'", target);
             return null;
         }
-
     }
 
     private ResponseEntity<String> handleForward(String reqBody, String merchantId) {
