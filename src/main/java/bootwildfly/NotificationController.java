@@ -108,10 +108,16 @@ public class NotificationController {
     public ResponseEntity<String> bddForward(@PathVariable(value = "gateway") String gateway, @PathVariable(value = "service") String service,
             @RequestBody String reqBody) {
         String target = "http://54.194.34.27:40121/" + gateway + "/services/" + service;
-        LOG.info("forwarding to '{}'", target);
-        RestTemplate template = new RestTemplate();
-        HttpEntity<String> body = new HttpEntity<>(reqBody);
-        return template.exchange(target, HttpMethod.POST, body, String.class);
+        try {
+            LOG.info("forwarding to '{}'", target);
+            RestTemplate template = new RestTemplate();
+            HttpEntity<String> body = new HttpEntity<>(reqBody);
+            template.setErrorHandler(new ResponseErrorHandler());
+            return template.exchange(target, HttpMethod.POST, body, String.class);
+        } catch (Exception e) {
+            LOG.warn("Exception occured while forwarding notification to '{}'", target);
+            return null;
+        }
 
     }
 
