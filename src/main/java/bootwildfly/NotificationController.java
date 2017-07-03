@@ -111,7 +111,7 @@ public class NotificationController {
             "/bdd/{path1}/{path2}/{path3}",
             "/bdd/{path1}/{path2}/{path3}/{path4}",
             "/bdd/{path1}/{path2}/{path3}/{path4}/path5" }, method = RequestMethod.POST)
-    public ResponseEntity<String> bddForward(Map<String, String> pathVariables, @RequestBody String reqBody) {
+    public ResponseEntity<String> bddForward(@PathVariable Map<String, String> pathVariables, @RequestBody String reqBody) {
         StringJoiner sj = new StringJoiner("/");
         TreeMap<String, String> sorted = new TreeMap<>(pathVariables);
         for (String path : sorted.keySet()) {
