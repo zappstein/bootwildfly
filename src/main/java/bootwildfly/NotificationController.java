@@ -123,8 +123,11 @@ public class NotificationController {
             LOG.info("forwarding to '{}'", target);
             RestTemplate template = new RestTemplate();
             HttpEntity<String> body = new HttpEntity<>(reqBody);
+            LOG.info("Request body: {}", body.getBody());
             template.setErrorHandler(new ResponseErrorHandler());
-            return template.exchange(target, HttpMethod.PUT, body, String.class);
+            ResponseEntity<String> result = template.exchange(target, HttpMethod.PUT, body, String.class);
+            LOG.info("Response body: {}", result.getBody());
+            return result;
         } catch (Exception e) {
             LOG.warn("Exception occured while forwarding notification to '{}'", target);
             return null;
