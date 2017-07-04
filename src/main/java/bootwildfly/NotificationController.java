@@ -110,7 +110,7 @@ public class NotificationController {
             "/bdd/{path1}/{path2}",
             "/bdd/{path1}/{path2}/{path3}",
             "/bdd/{path1}/{path2}/{path3}/{path4}",
-            "/bdd/{path1}/{path2}/{path3}/{path4}/path5" }, method = RequestMethod.POST)
+            "/bdd/{path1}/{path2}/{path3}/{path4}/path5" }, method = RequestMethod.PUT)
     public ResponseEntity<String> bddForward(@PathVariable Map<String, String> pathVariables, @RequestBody String reqBody) {
         StringJoiner sj = new StringJoiner("/");
         TreeMap<String, String> sorted = new TreeMap<>(pathVariables);
@@ -124,7 +124,7 @@ public class NotificationController {
             RestTemplate template = new RestTemplate();
             HttpEntity<String> body = new HttpEntity<>(reqBody);
             template.setErrorHandler(new ResponseErrorHandler());
-            return template.exchange(target, HttpMethod.POST, body, String.class);
+            return template.exchange(target, HttpMethod.PUT, body, String.class);
         } catch (Exception e) {
             LOG.warn("Exception occured while forwarding notification to '{}'", target);
             return null;
