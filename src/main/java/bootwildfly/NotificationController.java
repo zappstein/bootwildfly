@@ -112,7 +112,8 @@ public class NotificationController {
             "/bdd/{path1}/{path2}/{path3}",
             "/bdd/{path1}/{path2}/{path3}/{path4}",
             "/bdd/{path1}/{path2}/{path3}/{path4}/path5" })
-    public ResponseEntity<String> bddForward(@PathVariable Map<String, String> pathVariables, @RequestBody String reqBody, HttpServletRequest request) {
+    public ResponseEntity<String> bddForward(@PathVariable Map<String, String> pathVariables,
+            @RequestBody(required=false) String reqBody, HttpServletRequest request) {
         StringJoiner sj = new StringJoiner("/");
         TreeMap<String, String> sorted = new TreeMap<>(pathVariables);
         for (String path : sorted.keySet()) {
@@ -124,6 +125,7 @@ public class NotificationController {
             LOG.info("forwarding to '{}'", target);
             RestTemplate template = new RestTemplate();
             HttpEntity<String> body = new HttpEntity<>(reqBody);
+            LOG.info("Request HTTP method: {}", request.getMethod());
             LOG.info("Request body: {}", body.getBody());
             template.setErrorHandler(new ResponseErrorHandler());
             ResponseEntity<String> result = template.exchange(target, resolve(request.getMethod()), body, String.class);
