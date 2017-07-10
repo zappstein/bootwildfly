@@ -3,6 +3,7 @@ package bootwildfly;
 import static bootwildfly.NotificationBodyParser.retrieveData;
 import static java.util.Arrays.asList;
 import static java.util.TimeZone.getTimeZone;
+import static org.springframework.http.HttpMethod.resolve;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -110,8 +111,8 @@ public class NotificationController {
             "/bdd/{path1}/{path2}",
             "/bdd/{path1}/{path2}/{path3}",
             "/bdd/{path1}/{path2}/{path3}/{path4}",
-            "/bdd/{path1}/{path2}/{path3}/{path4}/path5" }, method = RequestMethod.PUT)
-    public ResponseEntity<String> bddForward(@PathVariable Map<String, String> pathVariables, @RequestBody String reqBody) {
+            "/bdd/{path1}/{path2}/{path3}/{path4}/path5" })
+    public ResponseEntity<String> bddForward(@PathVariable Map<String, String> pathVariables, @RequestBody String reqBody, HttpServletRequest request) {
         StringJoiner sj = new StringJoiner("/");
         TreeMap<String, String> sorted = new TreeMap<>(pathVariables);
         for (String path : sorted.keySet()) {
@@ -125,7 +126,7 @@ public class NotificationController {
             HttpEntity<String> body = new HttpEntity<>(reqBody);
             LOG.info("Request body: {}", body.getBody());
             template.setErrorHandler(new ResponseErrorHandler());
-            ResponseEntity<String> result = template.exchange(target, HttpMethod.PUT, body, String.class);
+            ResponseEntity<String> result = template.exchange(target, resolve(request.getMethod()), body, String.class);
             LOG.info("Response body: {}", result.getBody());
             return result;
         } catch (Exception e) {
