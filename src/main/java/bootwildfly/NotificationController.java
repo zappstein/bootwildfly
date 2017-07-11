@@ -133,7 +133,7 @@ public class NotificationController {
             LOG.info("Response body: {}", result.getBody());
             return result;
         } catch (Exception e) {
-            LOG.warn("Exception occured while forwarding notification to '{}'", target);
+            LOG.warn("Exception occured while forwarding request to '{}'", target, e);
             return null;
         }
     }
