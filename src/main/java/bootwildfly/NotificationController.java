@@ -111,7 +111,8 @@ public class NotificationController {
             "/bdd/{path1}/{path2}",
             "/bdd/{path1}/{path2}/{path3}",
             "/bdd/{path1}/{path2}/{path3}/{path4}",
-            "/bdd/{path1}/{path2}/{path3}/{path4}/path5" })
+            "/bdd/{path1}/{path2}/{path3}/{path4}/{path5}",
+            "/bdd/{path1}/{path2}/{path3}/{path4}/{path5}/{path6}"})
     public ResponseEntity<String> bddForward(@PathVariable Map<String, String> pathVariables,
             @RequestBody(required=false) String reqBody, HttpServletRequest request) {
         StringJoiner sj = new StringJoiner("/");
