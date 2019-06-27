@@ -1,1 +1,1 @@
-web: java -jar target/ROOT.war
+heroku ps:scale web=1
